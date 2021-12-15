@@ -9,6 +9,8 @@ interface ContentHeaderProps {
   titleButton: string;
   total: string;
   path: string;
+  search(): void;
+  change(e: React.FormEvent<HTMLDivElement>): void;
 }
 
 export function ContentHeader({
@@ -16,13 +18,15 @@ export function ContentHeader({
   titleButton,
   total,
   path,
+  search,
+  change,
 }: ContentHeaderProps) {
   return (
     <>
       <Container>
         <DivLeft>
           <TitleSection title={title} />
-          <InputSearch />
+          <InputSearch onChange={(e) => change(e)} search={search} />
         </DivLeft>
         <Link to={path}>
           <Button text={titleButton} />

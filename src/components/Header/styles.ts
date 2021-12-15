@@ -140,3 +140,12 @@ export const Me = styled.button`
     cursor: pointer;
   }
 `;
+
+export const Avatar = styled(Link)`
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+
+  margin-right: 10px;
+`;

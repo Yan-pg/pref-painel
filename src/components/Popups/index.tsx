@@ -57,7 +57,7 @@ export function Popups({ showMOdal, onClose }: PopupsProps) {
             <h3>Usuario adicionado com sucesso!</h3>
             <p>Deu certo! Agora você já pode acessar o painel, bora lá?</p>
           </Body>
-          <FooterButton>
+          <FooterButton onClick={onClose}>
             <Button text="Ok" showIcon={false} />
           </FooterButton>
         </Content>

@@ -1,9 +1,10 @@
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
 import { FaChevronDown } from "react-icons/fa";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiPower } from "react-icons/fi";
 import { AiOutlinePicRight } from "react-icons/ai";
 
 import LogoHeader from "../../assets/logo_header.svg";
+import { useAuth } from "../../hooks/Auth";
 
 import {
   Container,
@@ -14,8 +15,8 @@ import {
   Button,
   ButtonInfos,
   Me,
+  Avatar,
 } from "./styles";
-import { useAuth } from "../../hooks/Auth";
 
 interface HeaderPros {
   selectedPage: 0 | 1 | 2;
@@ -63,16 +64,19 @@ export function Header({ selectedPage }: HeaderPros) {
         </ContentLeft>
 
         <Me>
-          <img
-            src={
-              user.avatar
-                ? `https://images-pref.s3.amazonaws.com/${user.avatar}`
-                : "https://avatars.githubusercontent.com/u/65233281?v=4"
-            }
-            alt="avatar"
-          />
-          <p>Yan César</p>
-          <FaChevronDown />
+          <Avatar to="/user/99840908-c2f8-4c57-b87d-0d484861dbb2">
+            <img
+              src={
+                user.avatar
+                  ? `https://images-pref.s3.amazonaws.com/${user.avatar}`
+                  : "https://avatars.githubusercontent.com/u/65233281?v=4"
+              }
+              alt="avatar"
+            />
+            <p>Yan César</p>
+          </Avatar>
+
+          <FiPower />
         </Me>
       </Content>
     </Container>

@@ -35,13 +35,19 @@ interface TableProps {
   titles: string[];
   contentPosts?: ContentPostsProps[];
   contentUsers?: ContentUsersProps[];
+  page: number;
+  onChangePageNext(): void;
+  onChangePagePrev(): void;
 }
 
-const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-
-export function Table({ titles, contentPosts, contentUsers }: TableProps) {
-  const navigate = useNavigate();
-
+export function Table({
+  titles,
+  contentPosts,
+  contentUsers,
+  page,
+  onChangePageNext,
+  onChangePagePrev,
+}: TableProps) {
   const [contentPostsArray, setContentPostsArray] = useState<
     ContentPostsProps[]
   >([]);
@@ -50,8 +56,6 @@ export function Table({ titles, contentPosts, contentUsers }: TableProps) {
   >([]);
 
   const [selected, setselected] = useState(-1);
-  const [lastIndex, setLastIndex] = useState(0);
-  const [offset, setOffset] = useState(1);
 
   useEffect(() => {
     if (contentPosts) {
@@ -59,27 +63,7 @@ export function Table({ titles, contentPosts, contentUsers }: TableProps) {
     } else if (contentUsers) {
       setContentUsersArray(contentUsers);
     }
-
-    const ar = [];
-    if (array.length > 7) {
-      for (let i = 0; i <= 4; i++) {
-        ar.push(i + 1);
-      }
-
-      setLastIndex(array.length);
-    }
   }, [contentPosts, contentUsers]);
-
-  function nextPage() {
-    setOffset((oldValue) => oldValue + 1);
-    const ar = [];
-
-    if (offset === 5) {
-      for (let i = 2; i <= 6; i++) {
-        ar.push(i);
-      }
-    }
-  }
 
   function getDate(date: string): string {
     const value = date.replace("T", " ").split("-");
@@ -193,13 +177,16 @@ export function Table({ titles, contentPosts, contentUsers }: TableProps) {
 
       <Pagination>
         <ContentPagination>
-          <p>{`${offset} de ${lastIndex}`}</p>
+          {page > 1 && (
+            <ButtonNextOuPrev
+              style={{ marginRight: 20 }}
+              onClick={onChangePagePrev}
+            >
+              <FaChevronLeft />
+            </ButtonNextOuPrev>
+          )}
 
-          <ButtonNextOuPrev style={{ marginRight: 20 }} onClick={nextPage}>
-            <FaChevronLeft />
-          </ButtonNextOuPrev>
-
-          <ButtonNextOuPrev onClick={nextPage}>
+          <ButtonNextOuPrev onClick={onChangePageNext}>
             <FaChevronRight />
           </ButtonNextOuPrev>
         </ContentPagination>

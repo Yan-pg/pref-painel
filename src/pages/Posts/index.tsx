@@ -49,6 +49,12 @@ const content = [
   },
 ];
 
+function search() {}
+
+function change(e: React.FormEvent<HTMLDivElement>) {
+  console.log(e);
+}
+
 export function Posts() {
   return (
     <>
@@ -59,9 +65,17 @@ export function Posts() {
           titleButton="Nova Publicação"
           total="72 publicações"
           path="/create-post"
+          change={(e) => change(e)}
+          search={() => {}}
         />
 
-        <Table titles={titles} contentPosts={content} />
+        <Table
+          titles={titles}
+          contentPosts={content}
+          onChangePageNext={() => {}}
+          onChangePagePrev={() => {}}
+          page={1}
+        />
       </Container>
     </>
   );

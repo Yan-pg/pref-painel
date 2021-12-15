@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ContentHeader } from "../../components/ContentHeader";
 import { Header } from "../../components/Header";
 import { Table } from "../../components/Table";
@@ -19,12 +19,33 @@ interface ContentUsersProps {
 
 export function Users() {
   const [contentUsers, setContentUsers] = useState<ContentUsersProps[]>([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [offset, setOffSet] = useState(1);
 
   useEffect(() => {
-    api.get("/users").then((response) => {
+    console.log(offset);
+
+    api.get(`/users?offset=${offset}&limit=6`).then((response) => {
       setContentUsers(response.data);
     });
-  }, [setContentUsers]);
+  }, [offset]);
+
+  const search = useCallback(async () => {
+    const response = await api.get(`/users?search=${searchValue}`);
+    setContentUsers(response.data);
+  }, [searchValue]);
+
+  const change = useCallback((e: any) => {
+    setSearchValue(e.target.value);
+  }, []);
+
+  const onChangePageNext = useCallback(async () => {
+    setOffSet(offset + 1);
+  }, [offset]);
+
+  const onChangePagePrev = useCallback(() => {
+    setOffSet(offset - 1);
+  }, [offset]);
 
   return (
     <>
@@ -35,9 +56,17 @@ export function Users() {
           titleButton="Novo Adm"
           total={`${contentUsers.length} usuários`}
           path="/create-user"
+          search={search}
+          change={change}
         />
 
-        <Table titles={titles} contentUsers={contentUsers} />
+        <Table
+          titles={titles}
+          contentUsers={contentUsers}
+          onChangePageNext={onChangePageNext}
+          onChangePagePrev={onChangePagePrev}
+          page={offset}
+        />
       </Container>
     </>
   );
