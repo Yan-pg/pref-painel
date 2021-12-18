@@ -9,7 +9,7 @@ import { Container } from "./styles";
 const titles = ["Todos usuários", "Função", "Adicionado"];
 
 interface ContentUsersProps {
-  id: number;
+  id: string;
   name: string;
   email: string;
   role: string;
@@ -47,6 +47,17 @@ export function Users() {
     setOffSet(offset - 1);
   }, [offset]);
 
+  async function handleDeleteUser(id?: string): Promise<void> {
+    try {
+      await api.patch(`users/update/${id}`, { active: false });
+
+      const response = await api.get(`/users?offset=${offset}&limit=6`);
+      setContentUsers(response.data);
+    } catch {
+      alert("error");
+    }
+  }
+
   return (
     <>
       <Header selectedPage={2} />
@@ -66,6 +77,7 @@ export function Users() {
           onChangePageNext={onChangePageNext}
           onChangePagePrev={onChangePagePrev}
           page={offset}
+          handleDeleteUser={handleDeleteUser}
         />
       </Container>
     </>

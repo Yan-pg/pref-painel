@@ -13,6 +13,7 @@ import {
   ButtonNextOuPrev,
 } from "./styles";
 import { useNavigate } from "react-router-dom";
+import api from "../../services/api";
 
 interface ContentPostsProps {
   id: number;
@@ -23,7 +24,7 @@ interface ContentPostsProps {
 }
 
 interface ContentUsersProps {
-  id: number;
+  id: string;
   name: string;
   email: string;
   role: string;
@@ -38,6 +39,7 @@ interface TableProps {
   page: number;
   onChangePageNext(): void;
   onChangePagePrev(): void;
+  handleDeleteUser?(id?: string): void;
 }
 
 export function Table({
@@ -47,6 +49,7 @@ export function Table({
   page,
   onChangePageNext,
   onChangePagePrev,
+  handleDeleteUser,
 }: TableProps) {
   const [contentPostsArray, setContentPostsArray] = useState<
     ContentPostsProps[]
@@ -96,7 +99,14 @@ export function Table({
                     <input
                       type="checkbox"
                       value={post.id}
-                      onChange={(event) => setselected(+event.target.value)}
+                      onChange={(event) =>
+                        setselected((oldValue) =>
+                          oldValue === +event.target.value
+                            ? -1
+                            : +event.target.value
+                        )
+                      }
+                      checked={+post.id === selected}
                     />
                     <img
                       src="https://avatars.githubusercontent.com/u/65233281?v=4"
@@ -120,7 +130,7 @@ export function Table({
 
                   <td>
                     <button>
-                      {selected === post.id ? (
+                      {selected === +post.id ? (
                         <FiTrash />
                       ) : (
                         <FiMoreHorizontal />
@@ -136,8 +146,15 @@ export function Table({
                   <ContainerTitle>
                     <input
                       type="checkbox"
-                      value={user.id}
-                      onChange={(event) => setselected(+event.target.value)}
+                      value={index}
+                      onChange={(event) =>
+                        setselected((oldValue) =>
+                          oldValue === +event.target.value
+                            ? -1
+                            : +event.target.value
+                        )
+                      }
+                      checked={index === selected}
                     />
                     <img
                       src={
@@ -162,12 +179,14 @@ export function Table({
                   </td>
 
                   <td>
-                    <button>
-                      {selected === user.id ? (
-                        <FiTrash />
-                      ) : (
-                        <FiMoreHorizontal />
-                      )}
+                    <button
+                      onClick={() =>
+                        selected === index &&
+                        handleDeleteUser &&
+                        handleDeleteUser(user.id)
+                      }
+                    >
+                      {selected === index ? <FiTrash /> : <FiMoreHorizontal />}
                     </button>
                   </td>
                 </Line>

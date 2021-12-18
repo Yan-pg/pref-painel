@@ -77,13 +77,9 @@ export const ContainerTitle = styled.td`
 
   input[type="checkbox"] {
     cursor: pointer;
-    /* Add if not using autoprefixer */
     -webkit-appearance: none;
-    /* Remove most all native input styles */
     appearance: none;
-    /* For iOS < 15 */
     background-color: ${(props) => props.theme.colors.white};
-    /* Not removed via appearance */
     margin: 0;
 
     font: inherit;
@@ -95,6 +91,7 @@ export const ContainerTitle = styled.td`
 
     display: grid;
     place-content: center;
+    cursor: pointer;
   }
 
   input[type="checkbox"]::before {

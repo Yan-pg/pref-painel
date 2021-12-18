@@ -85,7 +85,7 @@ export function User() {
         }
         data.append("avatar", avatar);
         data.append("name", name);
-        data.append("permissions", "CREATE_USER, CREATE_POST");
+        data.append("permissions", "CREATE_USER, CREATE_POST, DELETE_USER");
         data.append("role", "Administrador");
 
         if (userId) {
@@ -95,8 +95,8 @@ export function User() {
         }
 
         setShowModal(true);
-      } catch {
-        console.log("error");
+      } catch (e) {
+        console.log("error", e);
       }
     },
     [email, password, name, confirmPassword, avatar, userId]
@@ -111,7 +111,7 @@ export function User() {
 
         <Content>
           <AvatarContainer>
-            <h2>Editar Usuário</h2>
+            <h2>{userId ? "Meu perfil" : "Criar usuário"}</h2>
             <AvatarContent>
               <input type="file" onChange={(e) => onImageChange(e)} />
               <img

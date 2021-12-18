@@ -1,5 +1,4 @@
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
-import { FaChevronDown } from "react-icons/fa";
 import { FiUser, FiPower } from "react-icons/fi";
 import { AiOutlinePicRight } from "react-icons/ai";
 
@@ -23,7 +22,7 @@ interface HeaderPros {
 }
 
 export function Header({ selectedPage }: HeaderPros) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   return (
     <Container>
@@ -76,7 +75,9 @@ export function Header({ selectedPage }: HeaderPros) {
             <p>Yan César</p>
           </Avatar>
 
-          <FiPower />
+          <button onClick={signOut}>
+            <FiPower />
+          </button>
         </Me>
       </Content>
     </Container>

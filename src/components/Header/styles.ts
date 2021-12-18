@@ -136,6 +136,12 @@ export const Me = styled.button`
     height: 16px;
   }
 
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
   &:hover {
     cursor: pointer;
   }
