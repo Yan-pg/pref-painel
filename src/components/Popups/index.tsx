@@ -6,10 +6,15 @@ import IconSuccess from "../../assets/successIcon.svg";
 import { Button } from "../Button";
 
 import { Container, Content, Header, Body, FooterButton } from "./styles";
+import { Input } from "../Input";
 
 interface PopupsProps {
   showMOdal: boolean;
+  buttonIsValid?: boolean;
+  type: string;
   onClose(): void;
+  submit?(): void;
+  onChangeInput?(e: React.FormEvent<HTMLDivElement>): void;
 }
 
 const customStyles = {
@@ -21,7 +26,7 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: 564,
-    height: 488,
+    height: "auto",
     border: "none",
     margin: 0,
     padding: 0,
@@ -31,18 +36,19 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-export function Popups({ showMOdal, onClose }: PopupsProps) {
+export function Popups({
+  showMOdal,
+  buttonIsValid,
+  type,
+  onClose,
+  submit,
+  onChangeInput,
+}: PopupsProps) {
   return (
     <>
       {showMOdal && <Container />}
 
-      <Modal
-        isOpen={showMOdal}
-        // onAfterOpen={afterOpenModal}
-        // onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
+      <Modal isOpen={showMOdal} style={customStyles}>
         <Content>
           <Header>
             <FiMoreHorizontal />
@@ -52,13 +58,32 @@ export function Popups({ showMOdal, onClose }: PopupsProps) {
           </Header>
 
           <Body>
-            <img src={IconSuccess} alt="Sucesso" />
-
-            <h3>Usuario adicionado com sucesso!</h3>
-            <p>Deu certo! Agora você já pode acessar o painel, bora lá?</p>
+            {type !== "writing" ? (
+              <>
+                <img src={IconSuccess} alt="Sucesso" />
+                <h3>Usuario adicionado com sucesso!</h3>
+                <p>Deu certo! Agora você já pode acessar o painel, bora lá?</p>
+              </>
+            ) : (
+              <div>
+                <Input
+                  label="Por favor digite a nova categoria"
+                  onChange={(e) => onChangeInput && onChangeInput(e)}
+                />
+              </div>
+            )}
           </Body>
-          <FooterButton onClick={onClose}>
-            <Button text="Ok" showIcon={false} />
+          <FooterButton onClick={submit}>
+            <Button
+              style={{
+                background:
+                  buttonIsValid && buttonIsValid === true
+                    ? "#0C5156"
+                    : "#868E96",
+              }}
+              text="Ok"
+              showIcon={false}
+            />
           </FooterButton>
         </Content>
       </Modal>

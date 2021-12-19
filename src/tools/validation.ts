@@ -5,6 +5,14 @@ interface Props {
   confirmPassword?: string;
 }
 
+interface PropsPost {
+  imageDescription: string;
+  title: string;
+  category: string;
+  contentPost: string;
+  image: any;
+}
+
 export const isEmail = (email: string): boolean => {
   return (
     email.length > 0 &&
@@ -52,4 +60,20 @@ export const validateAll = ({
   }
 
   return !validationProps.includes(false);
+};
+
+export const validadeAllPost = ({
+  category,
+  imageDescription,
+  contentPost,
+  image,
+  title,
+}: PropsPost) => {
+  return (
+    category.length > 0 &&
+    imageDescription.length > 0 &&
+    contentPost.length > 0 &&
+    image &&
+    title.length > 0
+  );
 };

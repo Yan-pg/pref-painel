@@ -105,7 +105,7 @@ const Editor = (props) => {
         theme="snow"
         modules={modules}
         formats={formats}
-        value={text}
+        value={text || ''}
         // onBlur={onBlur}
         // onChange={onChange}
       >

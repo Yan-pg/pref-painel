@@ -7,7 +7,6 @@ export const Container = styled.div`
   right: 0;
   bottom: 0;
   background: ${(props) => props.theme.colors.lighGray};
-  /* z-index: 00; */
   opacity: 0.6;
 `;
 
@@ -16,6 +15,7 @@ export const Content = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   height: 100%;
 `;
 

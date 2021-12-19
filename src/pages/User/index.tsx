@@ -26,12 +26,6 @@ import {
   DisplayFlex,
 } from "./styles";
 
-interface User {
-  email: string;
-  name: string;
-  avatar: string;
-}
-
 export function User() {
   const navigate = useNavigate();
   const { userId } = useParams();
@@ -113,7 +107,11 @@ export function User() {
           <AvatarContainer>
             <h2>{userId ? "Meu perfil" : "Criar usuário"}</h2>
             <AvatarContent>
-              <input type="file" onChange={(e) => onImageChange(e)} />
+              <input
+                type="file"
+                onChange={(e) => onImageChange(e)}
+                accept="image/*"
+              />
               <img
                 src={
                   image ||
@@ -184,6 +182,7 @@ export function User() {
       </Container>
       {showModal && (
         <Popups
+          type="success"
           showMOdal={showModal}
           onClose={() => {
             setShowModal(false);

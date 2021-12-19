@@ -120,7 +120,7 @@ export const Me = styled.button`
     width: 32px;
     height: 32px;
 
-    border-radius: 10px;
+    border-radius: 4.5px;
     margin-right: 10px;
   }
 

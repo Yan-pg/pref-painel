@@ -1,7 +1,13 @@
 import { Container } from "./styles";
 
+interface CategoryProps {
+  id: string;
+  title: string;
+  created_at: string;
+}
+
 interface SelectProps {
-  options: string[];
+  options: CategoryProps[];
 }
 
 export function Select({ options }: SelectProps) {
@@ -11,7 +17,9 @@ export function Select({ options }: SelectProps) {
         Selecione uma categoria
       </option>
       {options.map((optionItem) => (
-        <option value={optionItem}>{optionItem}</option>
+        <option key={optionItem.id} value={optionItem.title}>
+          {optionItem.title}
+        </option>
       ))}
     </Container>
   );
