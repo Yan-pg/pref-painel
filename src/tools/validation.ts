@@ -8,7 +8,7 @@ interface Props {
 interface PropsPost {
   imageDescription: string;
   title: string;
-  category: string;
+  category: string[];
   contentPost: string;
   image: any;
 }

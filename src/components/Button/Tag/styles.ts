@@ -1,8 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 51px;
+  width: auto;
   height: 20px;
+  /* padding: 5px; */
+  max-width: 100px;
 
   background: #a0d2ff;
   color: #2b9aff;

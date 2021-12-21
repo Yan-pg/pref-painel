@@ -44,6 +44,14 @@ export const SelectContainer = styled.div`
   gap: 32px;
 `;
 
+export const ContainerTags = styled.div`
+  display: flex;
+
+  div + div {
+    margin-left: 20px;
+  }
+`;
+
 export const ContainerEditor = styled.div`
   display: flex;
   flex-direction: column;

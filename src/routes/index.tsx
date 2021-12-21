@@ -8,6 +8,7 @@ import { Users } from "../pages/Users";
 import { User } from "../pages/User";
 import PrivateRoute from "./Routes";
 import { Banners } from "../pages/Banners";
+import { EditorPage } from "../pages/Editor";
 
 const RoutesApp: React.FC = () => (
   <Router>
@@ -46,6 +47,15 @@ const RoutesApp: React.FC = () => (
           </PrivateRoute>
         }
       />
+      <Route
+        path="/editor"
+        element={
+          <PrivateRoute>
+            <EditorPage />
+          </PrivateRoute>
+        }
+      />
+
       <Route
         path="/create-user"
         element={

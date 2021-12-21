@@ -8,11 +8,13 @@ interface CategoryProps {
 
 interface SelectProps {
   options: CategoryProps[];
+  onChange(e: React.ChangeEvent<HTMLSelectElement>): void;
 }
 
-export function Select({ options }: SelectProps) {
+export function Select({ options, onChange }: SelectProps) {
+  console.log(options);
   return (
-    <Container>
+    <Container onChange={(e) => onChange(e)}>
       <option value="valor1" disabled>
         Selecione uma categoria
       </option>
