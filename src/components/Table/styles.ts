@@ -55,6 +55,13 @@ export const ContainerTitle = styled.td`
   display: flex;
   align-items: center;
 
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: start;
+  }
+
   img {
     width: 48px;
     height: 48px;
@@ -66,6 +73,10 @@ export const ContainerTitle = styled.td`
 
   h3 {
     margin-left: 19px;
+    max-width: 300px; // Limite maximo do texto
+    /* white-space: nowrap; // Removendo quebra de linha */
+    overflow: hidden; // Removendo a barra de rolagem
+    text-overflow: ellipsis;
   }
 
   p {

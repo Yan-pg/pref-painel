@@ -23,8 +23,6 @@ export function Users() {
   const [offset, setOffSet] = useState(1);
 
   useEffect(() => {
-    console.log(offset);
-
     api.get(`/users?offset=${offset}&limit=6`).then((response) => {
       setContentUsers(response.data);
     });
@@ -77,7 +75,7 @@ export function Users() {
           onChangePageNext={onChangePageNext}
           onChangePagePrev={onChangePagePrev}
           page={offset}
-          handleDeleteUser={handleDeleteUser}
+          handleDelete={handleDeleteUser}
         />
       </Container>
     </>

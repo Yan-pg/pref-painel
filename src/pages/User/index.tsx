@@ -41,7 +41,6 @@ export function User() {
   useEffect(() => {
     if (userId) {
       api.get(`/users/${userId}`).then((response) => {
-        console.log(response);
         const user = response.data;
 
         setImage(`https://images-pref.s3.amazonaws.com/${user.avatar}`);
@@ -183,11 +182,12 @@ export function User() {
       {showModal && (
         <Popups
           type="success"
-          showMOdal={showModal}
+          showModal={showModal}
           onClose={() => {
             setShowModal(false);
             navigate("/users");
           }}
+          buttonIsValid
         />
       )}
     </>

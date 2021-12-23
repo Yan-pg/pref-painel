@@ -9,7 +9,7 @@ import { Container, Content, Header, Body, FooterButton } from "./styles";
 import { Input } from "../Input";
 
 interface PopupsProps {
-  showMOdal: boolean;
+  showModal: boolean;
   buttonIsValid?: boolean;
   type: string;
   onClose(): void;
@@ -37,7 +37,7 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 export function Popups({
-  showMOdal,
+  showModal,
   buttonIsValid,
   type,
   onClose,
@@ -46,9 +46,9 @@ export function Popups({
 }: PopupsProps) {
   return (
     <>
-      {showMOdal && <Container />}
+      {showModal && <Container />}
 
-      <Modal isOpen={showMOdal} style={customStyles}>
+      <Modal isOpen={showModal} style={customStyles}>
         <Content>
           <Header>
             <FiMoreHorizontal />
@@ -73,7 +73,7 @@ export function Popups({
               </div>
             )}
           </Body>
-          <FooterButton onClick={submit}>
+          <FooterButton onClick={() => (submit && submit) || onClose()}>
             <Button
               style={{
                 background:

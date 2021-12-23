@@ -48,10 +48,10 @@ const RoutesApp: React.FC = () => (
         }
       />
       <Route
-        path="/editor"
+        path="/post/:postId"
         element={
           <PrivateRoute>
-            <EditorPage />
+            <Post />
           </PrivateRoute>
         }
       />

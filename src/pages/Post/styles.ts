@@ -8,7 +8,6 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  /* height: 800px; */
   display: flex;
   flex-direction: column;
   gap: 59px;

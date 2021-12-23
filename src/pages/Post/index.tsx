@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Tag } from "../../components/Button/Tag";
 import { DropzoneArea } from "../../components/Dropzone";
@@ -9,6 +10,7 @@ import { Popups } from "../../components/Popups";
 import { Select } from "../../components/Select";
 import { TitleSection } from "../../components/TitleSection";
 import { usePost } from "../../hooks/Post";
+// import { Post } from "../../interfaces";
 import api from "../../services/api";
 import { validadeAllPost } from "../../tools/validation";
 import { DisplayFlex } from "../User/styles";
@@ -29,24 +31,36 @@ interface CategoryProps {
 }
 
 export function Post() {
+  const navigate = useNavigate();
+  const { postId } = useParams();
+
   const [fileName, setFileName] = useState<any>([]);
   const [imageUrl, setImageUrl] = useState<any>(null);
+  const [showModalSucess, setShowModalSucess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [imageDescription, setImageDescription] = useState("");
   const [title, setTitle] = useState("");
   const [categoriesList, setCategoriesList] = useState<CategoryProps[]>([]);
   const [categoryChange, setCategoryChange] = useState("");
+  // const [post, setPost] = useState<Post>({} as Post);
+
   const { contentPost, setContentPost } = usePost();
 
   useEffect(() => {
     async function loaderInfos() {
+      if (postId) {
+        const postResponse = await api.get(`/post/list/${postId}`);
+        // setPost(postResponse.data.post);
+        // setCategories()
+        console.log(postResponse);
+      }
       const response = await api.get("/categories");
       setCategoriesList(response.data.categories);
     }
 
     loaderInfos();
-  }, []);
+  }, [postId]);
 
   const handleUpload = useCallback((file: any) => {
     if (file) {
@@ -70,28 +84,33 @@ export function Post() {
   }, [categoryChange]);
 
   const handleCreatePost = useCallback(async () => {
-    if (
-      !validadeAllPost({
-        imageDescription,
-        title,
-        image: fileName,
-        contentPost,
-        category: categories,
-      })
-    ) {
-      return;
+    try {
+      if (
+        !validadeAllPost({
+          imageDescription,
+          title,
+          image: fileName,
+          contentPost,
+          category: categories,
+        })
+      ) {
+        return;
+      }
+
+      const data = new FormData();
+
+      data.append("image", fileName);
+      data.append("title", title);
+      data.append("description", contentPost);
+      data.append("categories", `${categories}`);
+      data.append("image_description", imageDescription);
+
+      await api.post("/post/create", data);
+      setContentPost("");
+      setShowModalSucess(true);
+    } catch {
+      alert("error");
     }
-
-    const data = new FormData();
-
-    data.append("image", fileName);
-    data.append("title", title);
-    data.append("description", contentPost);
-    data.append("categories", `${categories}`);
-    data.append("image_description", imageDescription);
-
-    await api.post("/post/create", data);
-    setContentPost("");
   }, [
     fileName,
     title,
@@ -183,13 +202,24 @@ export function Post() {
       {showModal && (
         <Popups
           type="writing"
-          showMOdal={showModal}
+          showModal={showModal}
           onClose={() => setShowModal(false)}
           onChangeInput={(e: any) => {
             setCategoryChange(e.target.value);
           }}
           buttonIsValid={categoryChange.length > 0}
           submit={createCategory}
+        />
+      )}
+      {showModalSucess && (
+        <Popups
+          type="success"
+          showModal={showModalSucess}
+          onClose={() => {
+            setShowModalSucess(false);
+            navigate("/posts");
+          }}
+          buttonIsValid
         />
       )}
     </>

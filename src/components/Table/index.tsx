@@ -3,6 +3,9 @@ import { FiTrash, FiMoreHorizontal } from "react-icons/fi";
 import { Tag } from "../Button/Tag";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
+import { Post } from "../../interfaces";
+import { useNavigate } from "react-router-dom";
+
 import {
   Container,
   Header,
@@ -12,16 +15,6 @@ import {
   ContentPagination,
   ButtonNextOuPrev,
 } from "./styles";
-import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
-
-interface ContentPostsProps {
-  id: number;
-  title: string;
-  tag: string;
-  adm: string;
-  date: string;
-}
 
 interface ContentUsersProps {
   id: string;
@@ -34,12 +27,12 @@ interface ContentUsersProps {
 
 interface TableProps {
   titles: string[];
-  contentPosts?: ContentPostsProps[];
+  contentPosts?: Post[];
   contentUsers?: ContentUsersProps[];
   page: number;
   onChangePageNext(): void;
   onChangePagePrev(): void;
-  handleDeleteUser?(id?: string): void;
+  handleDelete?(id?: string): void;
 }
 
 export function Table({
@@ -49,11 +42,11 @@ export function Table({
   page,
   onChangePageNext,
   onChangePagePrev,
-  handleDeleteUser,
+  handleDelete,
 }: TableProps) {
-  const [contentPostsArray, setContentPostsArray] = useState<
-    ContentPostsProps[]
-  >([]);
+  const navigate = useNavigate();
+
+  const [posts, setPosts] = useState<Post[]>([]);
   const [contentUsersArray, setContentUsersArray] = useState<
     ContentUsersProps[]
   >([]);
@@ -62,7 +55,7 @@ export function Table({
 
   useEffect(() => {
     if (contentPosts) {
-      setContentPostsArray(contentPosts);
+      setPosts(contentPosts);
     } else if (contentUsers) {
       setContentUsersArray(contentUsers);
     }
@@ -91,14 +84,14 @@ export function Table({
           <div></div>
         </Header>
 
-        {contentPostsArray.length > 0
-          ? contentPostsArray.map((post, index) => (
+        {posts.length > 0
+          ? posts.map((post, index) => (
               <>
                 <Line key={`${post.id}-${index}-${Math.random()}`}>
                   <ContainerTitle>
                     <input
                       type="checkbox"
-                      value={post.id}
+                      value={index}
                       onChange={(event) =>
                         setselected((oldValue) =>
                           oldValue === +event.target.value
@@ -106,35 +99,39 @@ export function Table({
                             : +event.target.value
                         )
                       }
-                      checked={+post.id === selected}
+                      checked={index === selected}
                     />
-                    <img
-                      src="https://avatars.githubusercontent.com/u/65233281?v=4"
-                      alt="IMGAE"
-                    />
-                    <div>
-                      <h3>{post.title}</h3>
-                    </div>
+                    <button onClick={() => navigate(`/post/${post.id}`)}>
+                      <img
+                        src={`https://images-pref.s3.amazonaws.com/${post.image}`}
+                        alt="IMGAE"
+                      />
+                      <div>
+                        <h3>{post.title}</h3>
+                      </div>
+                    </button>
                   </ContainerTitle>
                   <td>
-                    <Tag name={post.tag} />
+                    <Tag name={post.categories[0].title} />
                   </td>
 
                   <td>
-                    <p>{post.adm}</p>
+                    <p style={{ marginLeft: 25 }}>{post.user[0].name}</p>
                   </td>
 
                   <td>
-                    <p>{post.date}</p>
+                    <p style={{ marginLeft: 25 }}>{getDate(post.created_at)}</p>
                   </td>
 
                   <td>
-                    <button>
-                      {selected === +post.id ? (
-                        <FiTrash />
-                      ) : (
-                        <FiMoreHorizontal />
-                      )}
+                    <button
+                      onClick={() =>
+                        selected === index &&
+                        handleDelete &&
+                        handleDelete(post.id)
+                      }
+                    >
+                      {selected === index ? <FiTrash /> : <FiMoreHorizontal />}
                     </button>
                   </td>
                 </Line>
@@ -182,8 +179,8 @@ export function Table({
                     <button
                       onClick={() =>
                         selected === index &&
-                        handleDeleteUser &&
-                        handleDeleteUser(user.id)
+                        handleDelete &&
+                        handleDelete(user.id)
                       }
                     >
                       {selected === index ? <FiTrash /> : <FiMoreHorizontal />}
