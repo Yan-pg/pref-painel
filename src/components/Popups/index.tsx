@@ -44,6 +44,8 @@ export function Popups({
   submit,
   onChangeInput,
 }: PopupsProps) {
+  console.log(submit)
+
   return (
     <>
       {showModal && <Container />}
@@ -73,7 +75,7 @@ export function Popups({
               </div>
             )}
           </Body>
-          <FooterButton onClick={() => (submit && submit) || onClose()}>
+          <FooterButton onClick={() => submit && submit()}>
             <Button
               style={{
                 background:

@@ -27,8 +27,6 @@ export function Login() {
     async (e: React.MouseEvent) => {
       e.preventDefault();
       try {
-        console.log(!isPassword(password));
-
         if (!isEmail(email) || !isPassword(password)) {
           return;
         }

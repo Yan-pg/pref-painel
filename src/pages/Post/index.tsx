@@ -51,16 +51,23 @@ export function Post() {
     async function loaderInfos() {
       if (postId) {
         const postResponse = await api.get(`/post/list/${postId}`);
-        // setPost(postResponse.data.post);
-        // setCategories()
-        console.log(postResponse);
+
+        const { image_description, image, categories: itemCategories, description: itemDescription, title: itemTitle } = postResponse.data.post;
+
+        console.log(itemCategories)
+
+        setImageUrl(`https://images-pref.s3.amazonaws.com/${image}`);
+        setCategories([...itemCategories.map((item: any) => item.title)]);
+        setImageDescription(image_description);
+        setContentPost(itemDescription);
+        setTitle(itemTitle);
       }
       const response = await api.get("/categories");
       setCategoriesList(response.data.categories);
     }
 
     loaderInfos();
-  }, [postId]);
+  }, [postId, setContentPost]);
 
   const handleUpload = useCallback((file: any) => {
     if (file) {
@@ -74,6 +81,7 @@ export function Post() {
   }, []);
 
   const createCategory = useCallback(async () => {
+    console.log('entrou')
     const response = await api.post("/categories/create", {
       title: categoryChange,
     });
@@ -99,13 +107,21 @@ export function Post() {
 
       const data = new FormData();
 
-      data.append("image", fileName);
+      if (fileName) {
+        data.append("image", fileName);
+      }
+
       data.append("title", title);
       data.append("description", contentPost);
       data.append("categories", `${categories}`);
       data.append("image_description", imageDescription);
 
-      await api.post("/post/create", data);
+      if (postId) {
+        await api.put(`/post/update/${postId}`, data);
+      } else {
+        await api.post("/post/create", data);
+      }
+
       setContentPost("");
       setShowModalSucess(true);
     } catch {
@@ -118,6 +134,7 @@ export function Post() {
     categories,
     imageDescription,
     setContentPost,
+    postId
   ]);
 
   return (
@@ -137,22 +154,27 @@ export function Post() {
                 onChange={(currentValue) =>
                   setImageDescription(currentValue.currentTarget.value)
                 }
+                value={imageDescription}
+
               />
             </>
           ) : (
             <>
               <DropzoneArea onUpload={handleUpload} />
+                <img
+                  style={{ maxWidth: "10%", width: "auto" }}
+                  src={imageUrl}
+                  alt="imagePost"
+                />
+
               <Input
                 label="Descrição da imagem"
                 onChange={(currentValue) =>
                   setImageDescription(currentValue.currentTarget.value)
                 }
+                  value={imageDescription}
               />
-              <img
-                style={{ maxWidth: "10%", width: "auto" }}
-                src={imageUrl}
-                alt="imagePost"
-              />
+
             </>
           )}
           <h2>Serviço de informação</h2>
@@ -163,6 +185,7 @@ export function Post() {
               onChange={(currentValue) =>
                 setTitle(currentValue.currentTarget.value)
               }
+              value={title}
             />
           </MatterTitle>
 
@@ -184,8 +207,14 @@ export function Post() {
               />
             </DisplayFlex>
             <ContainerTags>
-              {categories.map((category, index) => (
-                <Tag key={index} name={category} />
+              {categories?.map((category, index) => (
+                <Tag
+                  key={index}
+                  name={category}
+                  removeTag={() =>
+                    setCategories((prevState) => prevState.filter(categoryPrev => categoryPrev !== category))
+                  }
+                />
               ))}
             </ContainerTags>
           </SelectContainer>
@@ -193,10 +222,10 @@ export function Post() {
           <ContainerEditor>
             <h2>Serviço de informação</h2>
 
-            <Editor />
+            <Editor valueItem={contentPost} />
           </ContainerEditor>
 
-          <Button text="salvar" onClick={handleCreatePost} />
+          <Button style={{ marginBottom: 20 }} text="salvar" onClick={handleCreatePost} />
         </Content>
       </Container>
       {showModal && (

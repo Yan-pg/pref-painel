@@ -29,7 +29,11 @@ const fullToolbarOptions = [
   ["link"],
 ];
 
-const EditorComponent = () => {
+interface EditorComponentProps {
+  valueItem?: string
+}
+
+const EditorComponent = ({ valueItem }: EditorComponentProps) => {
   const { setContentPost } = usePost();
 
   const modules = {
@@ -102,6 +106,7 @@ const EditorComponent = () => {
       theme="snow"
       modules={modules}
       onBlur={(range, source, editor) => setContentPost(editor.getHTML())}
+      defaultValue={valueItem}
     >
       <div style={{ minHeight: 213 }} className="my-editing-area" />
     </ReactQuill>

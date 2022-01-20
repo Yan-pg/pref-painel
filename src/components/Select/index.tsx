@@ -12,7 +12,6 @@ interface SelectProps {
 }
 
 export function Select({ options, onChange }: SelectProps) {
-  console.log(options);
   return (
     <Container onChange={(e) => onChange(e)}>
       <option value="valor1" disabled>

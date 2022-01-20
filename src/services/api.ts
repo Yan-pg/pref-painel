@@ -9,7 +9,7 @@ axios.defaults.headers.common["Content-Type"] =
 axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 
 const api = axios.create({
-  baseURL: "https://prefeituracondeuba.com",
+  baseURL: "https://server.prefeituracondeuba.com",
   // baseURL: "http://localhost:3333",
 });
 

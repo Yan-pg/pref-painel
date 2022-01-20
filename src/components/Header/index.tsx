@@ -66,7 +66,7 @@ export function Header({ selectedPage }: HeaderPros) {
           <Avatar to="/user/99840908-c2f8-4c57-b87d-0d484861dbb2">
             <img
               src={
-                user.avatar
+                user?.avatar
                   ? `https://images-pref.s3.amazonaws.com/${user.avatar}`
                   : "https://avatars.githubusercontent.com/u/65233281?v=4"
               }
