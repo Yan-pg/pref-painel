@@ -24,15 +24,18 @@ export function Banners() {
     api.get('/banners/list').then((response) => {
       const arr = []
 
-      for (let i = 0; i < 6 - response.data.banners; i++) {
+      for (let i = 0; i < 6 - response.data.banners.length; i++) {
         arr.push(i);
       }
+
+      console.log('asda', arr)
 
       setBanners(response.data.banners.concat(arr));
     }).catch(e => {
       console.log(e)
     });
   }, [])
+
 
   const handleUpload = useCallback(async (file: any) => {
     const value = file.target;
@@ -47,15 +50,11 @@ export function Banners() {
 
     const arr = []
 
-    for (let i = 0; i < 6 - responseGet.data.banners; i++) {
+    for (let i = 0; i < 6 - responseGet.data.banners.length; i++) {
       arr.push(i);
     }
 
     setBanners(responseGet.data.banners.concat(arr));
-
-    // const url = URL.createObjectURL(value.files[0]);
-
-    // setImageUrl(url);
   }, []);
 
 

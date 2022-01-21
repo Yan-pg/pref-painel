@@ -72,7 +72,7 @@ export function Header({ selectedPage }: HeaderPros) {
               }
               alt="avatar"
             />
-            <p>Yan César</p>
+            <p>{user.name}</p>
           </Avatar>
 
           <button onClick={signOut}>
