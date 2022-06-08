@@ -67,7 +67,7 @@ export const ContainerTitle = styled.td`
     height: 48px;
 
     border-radius: 6px;
-
+    object-fit: cover;
     margin-left: 23px;
   }
 
