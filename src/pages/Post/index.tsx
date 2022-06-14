@@ -43,6 +43,7 @@ export function Post() {
   const [title, setTitle] = useState("");
   const [categoriesList, setCategoriesList] = useState<CategoryProps[]>([]);
   const [categoryChange, setCategoryChange] = useState("");
+  const [slug, setSlug] = useState("");
   // const [post, setPost] = useState<Post>({} as Post);
 
   const { contentPost, setContentPost } = usePost();
@@ -52,14 +53,20 @@ export function Post() {
       if (postId) {
         const postResponse = await api.get(`/post/list/${postId}`);
 
-        const { image_description, image, categories: itemCategories, description: itemDescription, title: itemTitle } = postResponse.data.post;
-
-        console.log(itemCategories)
+        const {
+          image_description,
+          image,
+          categories: itemCategories,
+          description: itemDescription,
+          title: itemTitle,
+          slug,
+        } = postResponse.data.post;
 
         setImageUrl(`https://images-pref.s3.amazonaws.com/${image}`);
         setCategories([...itemCategories.map((item: any) => item.title)]);
         setImageDescription(image_description);
         setContentPost(itemDescription);
+        setSlug(slug);
         setTitle(itemTitle);
       }
       const response = await api.get("/categories");
@@ -81,7 +88,6 @@ export function Post() {
   }, []);
 
   const createCategory = useCallback(async () => {
-    console.log('entrou')
     const response = await api.post("/categories/create", {
       title: categoryChange,
     });
@@ -114,6 +120,7 @@ export function Post() {
       data.append("title", title);
       data.append("description", contentPost);
       data.append("categories", `${categories}`);
+      data.append("slug", `${slug}`);
       data.append("image_description", imageDescription);
 
       if (postId) {
@@ -134,7 +141,8 @@ export function Post() {
     categories,
     imageDescription,
     setContentPost,
-    postId
+    postId,
+    slug,
   ]);
 
   return (
@@ -155,26 +163,24 @@ export function Post() {
                   setImageDescription(currentValue.currentTarget.value)
                 }
                 value={imageDescription}
-
               />
             </>
           ) : (
             <>
               <DropzoneArea onUpload={handleUpload} />
-                <img
-                  style={{ maxWidth: "10%", width: "auto" }}
-                  src={imageUrl}
-                  alt="imagePost"
-                />
+              <img
+                style={{ maxWidth: "10%", width: "auto" }}
+                src={imageUrl}
+                alt="imagePost"
+              />
 
               <Input
                 label="Descrição da imagem"
                 onChange={(currentValue) =>
                   setImageDescription(currentValue.currentTarget.value)
                 }
-                  value={imageDescription}
+                value={imageDescription}
               />
-
             </>
           )}
           <h2>Serviço de informação</h2>
@@ -186,6 +192,27 @@ export function Post() {
                 setTitle(currentValue.currentTarget.value)
               }
               value={title}
+            />
+          </MatterTitle>
+
+          <MatterTitle>
+            <Input
+              label="Slug*"
+              onChange={(currentValue) => {
+                let value = currentValue.currentTarget.value;
+
+                value = value
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036F]/g, "")
+                  .replace(/ /g, "-");
+
+                setSlug(value);
+
+                currentValue.currentTarget.value = value;
+                return currentValue;
+              }}
+              value={slug}
             />
           </MatterTitle>
 
@@ -212,7 +239,11 @@ export function Post() {
                   key={index}
                   name={category}
                   removeTag={() =>
-                    setCategories((prevState) => prevState.filter(categoryPrev => categoryPrev !== category))
+                    setCategories((prevState) =>
+                      prevState.filter(
+                        (categoryPrev) => categoryPrev !== category
+                      )
+                    )
                   }
                 />
               ))}
@@ -225,7 +256,11 @@ export function Post() {
             <Editor valueItem={contentPost} />
           </ContainerEditor>
 
-          <Button style={{ marginBottom: 20 }} text="salvar" onClick={handleCreatePost} />
+          <Button
+            style={{ marginBottom: 20 }}
+            text="salvar"
+            onClick={handleCreatePost}
+          />
         </Content>
       </Container>
       {showModal && (
