@@ -73,7 +73,7 @@ export function Popups({
               </div>
             )}
           </Body>
-          <FooterButton onClick={() => submit && submit()}>
+          <FooterButton onClick={() => (submit ? submit() : onClose())}>
             <Button
               style={{
                 background:
