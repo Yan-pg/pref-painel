@@ -224,7 +224,10 @@ export function Post() {
                 options={categoriesList}
                 onChange={(e) => {
                   if (categories.includes(e.target.value)) return;
-                  setCategories((oldValue) => [e.target.value, ...oldValue]);
+                  setCategories((oldValue) => [
+                    e.target.value.trim(),
+                    ...oldValue,
+                  ]);
                 }}
               />
               <Button
@@ -269,7 +272,7 @@ export function Post() {
           showModal={showModal}
           onClose={() => setShowModal(false)}
           onChangeInput={(e: any) => {
-            setCategoryChange(e.target.value);
+            setCategoryChange(e.target.value.trim());
           }}
           buttonIsValid={categoryChange.length > 0}
           submit={createCategory}

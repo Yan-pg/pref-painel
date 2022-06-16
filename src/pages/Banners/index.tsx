@@ -1,54 +1,63 @@
 import { FiTrash } from "react-icons/fi";
-import { BiPencil } from "react-icons/bi";
-import { BiLink } from "react-icons/bi";
+import { BiLink, BiX, BiPencil } from "react-icons/bi";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 import { Header } from "../../components/Header";
 import { TitleSection } from "../../components/TitleSection";
 
-import { Container, Card, ContentCard, Buttons, DisplayFlex } from "./styles";
 import { DropzoneArea } from "../../components/Dropzone";
 import { useCallback, useEffect, useState } from "react";
 import api from "../../services/api";
+
+import {
+  Container,
+  Card,
+  ContentCard,
+  Buttons,
+  DisplayFlex,
+  ModalOrderContainer,
+  HeaderModal,
+  ModalOrderContent,
+  ContentImgModal,
+  OrderButtons,
+} from "./styles";
 
 interface BannersProps {
   link?: string;
   image: string;
 }
 
-
 export function Banners() {
   const [banners, setBanners] = useState<BannersProps[] | number[]>([]);
-  const [filename, setFilename] = useState<any>([]);
 
   useEffect(() => {
-    api.get('/banners/list').then((response) => {
-      const arr = []
+    api
+      .get("/banners/list")
+      .then((response) => {
+        const arr = [];
 
-      for (let i = 0; i < 6 - response.data.banners.length; i++) {
-        arr.push(i);
-      }
+        for (let i = 0; i < 6 - response.data.banners.length; i++) {
+          arr.push(i);
+        }
 
-      console.log('asda', arr)
-
-      setBanners(response.data.banners.concat(arr));
-    }).catch(e => {
-      console.log(e)
-    });
-  }, [])
-
+        setBanners(response.data.banners.concat(arr));
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   const handleUpload = useCallback(async (file: any) => {
     const value = file.target;
-    // setFilename(value.files[0]);
 
     const data = new FormData();
 
-    data.append('image', value.files[0]);
+    data.append("image", value.files[0]);
 
-    await api.post('/banners/create', data);
-    const responseGet = await api.get('/banners/list');
+    await api.post("/banners/create", data);
+    const responseGet = await api.get("/banners/list");
 
-    const arr = []
+    const arr = [];
 
     for (let i = 0; i < 6 - responseGet.data.banners.length; i++) {
       arr.push(i);
@@ -56,7 +65,6 @@ export function Banners() {
 
     setBanners(responseGet.data.banners.concat(arr));
   }, []);
-
 
   return (
     <>
@@ -67,10 +75,13 @@ export function Banners() {
         <Card>
           {banners.map((banner, index) => (
             <ContentCard key={index}>
-              {typeof banner !== 'number' ? (
+              {typeof banner !== "number" ? (
                 <>
                   <img
-                    src={banner.image || "https://i.pinimg.com/originals/7a/60/84/7a608417441a1c1e83e4743928cba1b4.jpg"}
+                    src={
+                      banner.image ||
+                      "https://i.pinimg.com/originals/7a/60/84/7a608417441a1c1e83e4743928cba1b4.jpg"
+                    }
                     alt="img"
                   />
 
@@ -94,12 +105,54 @@ export function Banners() {
                   </Buttons>
                 </>
               ) : (
-                  <DropzoneArea style={{ height: 242 }} onUpload={handleUpload} />
+                <DropzoneArea style={{ height: 242 }} onUpload={handleUpload} />
               )}
             </ContentCard>
           ))}
         </Card>
       </Container>
+
+      <ModalOrderContainer>
+        <HeaderModal>
+          <button>
+            <BiX size={30} color="#fff" />
+          </button>
+        </HeaderModal>
+        <ModalOrderContent>
+          <p>ORDEM PRÉ-DEFINIDAS</p>
+
+          {banners.map((banner, index, arr) => {
+            return (
+              <ContentImgModal key={index}>
+                {typeof banner !== "number" && (
+                  <>
+                    <img
+                      src={
+                        banner.image ||
+                        "https://i.pinimg.com/originals/7a/60/84/7a608417441a1c1e83e4743928cba1b4.jpg"
+                      }
+                      alt="img"
+                    />
+
+                    <OrderButtons>
+                      {index !== 0 && (
+                        <button>
+                          <FaAngleUp size={18} color="#343A40" />
+                        </button>
+                      )}
+                      {index !== arr.length - 1 && (
+                        <button>
+                          <FaAngleDown size={18} color="#343A40" />
+                        </button>
+                      )}
+                    </OrderButtons>
+                  </>
+                )}
+              </ContentImgModal>
+            );
+          })}
+        </ModalOrderContent>
+      </ModalOrderContainer>
     </>
   );
 }

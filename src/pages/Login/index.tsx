@@ -1,11 +1,10 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import Logo from "../../assets/logo.svg";
 import { Input } from "../../components/Input";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/Auth";
 import { isEmail, isPassword } from "../../tools/validation";
-import { sign } from "crypto";
 
 import {
   Container,

@@ -7,7 +7,7 @@ import ImageUploader from "quill-image-uploader";
 import ImageResize from "quill-image-resize-module-react";
 
 import "react-quill/dist/quill.snow.css";
-import { PostProvider, usePost } from "../../hooks/Post";
+import { usePost } from "../../hooks/Post";
 import api from "../../services/api";
 // #2 register module
 QuillEditor.register("modules/imageUploader", ImageUploader);
@@ -30,7 +30,7 @@ const fullToolbarOptions = [
 ];
 
 interface EditorComponentProps {
-  valueItem?: string
+  valueItem?: string;
 }
 
 const EditorComponent = ({ valueItem }: EditorComponentProps) => {

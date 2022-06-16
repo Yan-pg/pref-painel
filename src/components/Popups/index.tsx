@@ -44,8 +44,6 @@ export function Popups({
   submit,
   onChangeInput,
 }: PopupsProps) {
-  console.log(submit)
-
   return (
     <>
       {showModal && <Container />}

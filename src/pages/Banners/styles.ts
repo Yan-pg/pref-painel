@@ -98,3 +98,112 @@ export const Buttons = styled.div`
     }
   }
 `;
+
+export const ModalOrderContainer = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+
+  width: 400px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: ${(props) => props.theme.colors.backgroundPage};
+
+  border-left: 1px solid ${(props) => props.theme.colors.lighGray};
+`;
+
+export const ModalOrderContent = styled.div`
+  overflow-y: auto;
+  height: auto;
+
+  p {
+    font-weight: bold;
+    margin-top: 33px;
+    margin-bottom: 13px;
+    text-align: center;
+
+    color: ${(props) => props.theme.colors.blackGreen};
+  }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const HeaderModal = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  background: #105e63;
+
+  padding: 10px;
+
+  width: 100%;
+  height: 55px;
+
+  button {
+    background: none;
+    border: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
+export const ContainerImgModal = styled.div``;
+
+export const ContentImgModal = styled.div`
+  width: 360px;
+  height: 170px;
+  padding: 10px;
+  background: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
+
+  margin-top: 10px;
+
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  img {
+    width: 90%;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+`;
+
+export const OrderButtons = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 8px;
+
+  width: 90%;
+  margin-top: 10px;
+
+  button {
+    background: none;
+    border: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
