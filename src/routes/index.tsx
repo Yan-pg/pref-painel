@@ -57,7 +57,7 @@ const RoutesApp: React.FC = () => (
       />
 
       <Route
-        path="/create-user"
+        path="/create-user/"
         element={
           <PrivateRoute>
             <User />

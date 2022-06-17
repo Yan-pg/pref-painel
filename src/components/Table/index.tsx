@@ -140,7 +140,7 @@ export function Table({
           : contentUsersArray.map((user, index) => (
               <>
                 <Line key={`${user.id}-${index}-${Math.random()}`}>
-                  <ContainerTitle>
+                  <ContainerTitle onClick={() => navigate(`/user/${user.id}`)}>
                     <input
                       type="checkbox"
                       value={index}

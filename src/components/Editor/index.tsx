@@ -107,6 +107,7 @@ const EditorComponent = ({ valueItem }: EditorComponentProps) => {
       modules={modules}
       onBlur={(range, source, editor) => setContentPost(editor.getHTML())}
       defaultValue={valueItem}
+      value={valueItem}
     >
       <div style={{ minHeight: 213 }} className="my-editing-area" />
     </ReactQuill>

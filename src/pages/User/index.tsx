@@ -40,7 +40,9 @@ export function User() {
 
   useEffect(() => {
     if (userId) {
-      api.get(`/users/${userId}`).then((response) => {
+      console.log("entrou");
+
+      api.get(`/users/list/${userId}`).then((response) => {
         const user = response.data;
 
         setImage(`https://images-pref.s3.amazonaws.com/${user.avatar}`);
