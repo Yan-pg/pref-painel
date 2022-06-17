@@ -1,4 +1,36 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+
+interface ModalOrder {
+  showModalOrder: boolean;
+}
+
+const FadeInAnimation = keyframes`
+    0% {
+        transform:  translateX(360px);
+        opacity: 0;
+    }
+ 
+    100% {
+        opacity: 1;
+        transform:  translateX(0);
+
+    }
+`;
+
+const FadeOutAnimation = keyframes`
+    0% {
+      opacity: 1;
+        transform:  translateX(0);
+      
+    }
+ 
+    100% {
+      transform:  translateX(360px);
+      opacity: 0;
+       display: none;
+
+    }
+`;
 
 export const Container = styled.div`
   width: 90%;
@@ -99,7 +131,19 @@ export const Buttons = styled.div`
   }
 `;
 
-export const ModalOrderContainer = styled.div`
+export const ButtonShowModal = styled.button`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+
+  margin-top: -40px;
+  cursor: pointer;
+
+  border: none;
+  background: none;
+`;
+
+export const ModalOrderContainer = styled.div<ModalOrder>`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -112,9 +156,27 @@ export const ModalOrderContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
+  ${(props) =>
+    !props.showModalOrder
+      ? css`
+          opacity: 0;
+          display: none;
+        `
+      : css`
+          animation: ${FadeInAnimation} 0.5s;
+        `}
+
   background: ${(props) => props.theme.colors.backgroundPage};
 
   border-left: 1px solid ${(props) => props.theme.colors.lighGray};
+
+  .FadeInAnimation {
+    animation: ${FadeInAnimation} 1s !important;
+  }
+
+  .FadeOutAnimation {
+    animation: ${FadeOutAnimation} 1s;
+  }
 `;
 
 export const ModalOrderContent = styled.div`

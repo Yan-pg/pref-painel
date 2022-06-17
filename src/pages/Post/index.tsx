@@ -276,6 +276,7 @@ export function Post() {
           }}
           buttonIsValid={categoryChange.length > 0}
           submit={createCategory}
+          labelWriting="Por favor digite a nova categoria"
         />
       )}
       {showModalSucess && (

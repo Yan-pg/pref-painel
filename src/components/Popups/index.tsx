@@ -12,6 +12,7 @@ interface PopupsProps {
   showModal: boolean;
   buttonIsValid?: boolean;
   type: string;
+  labelWriting?: string;
   onClose(): void;
   submit?(): void;
   onChangeInput?(e: React.FormEvent<HTMLDivElement>): void;
@@ -43,6 +44,7 @@ export function Popups({
   onClose,
   submit,
   onChangeInput,
+  labelWriting,
 }: PopupsProps) {
   return (
     <>
@@ -67,7 +69,7 @@ export function Popups({
             ) : (
               <div>
                 <Input
-                  label="Por favor digite a nova categoria"
+                  label={labelWriting}
                   onChange={(e) => onChangeInput && onChangeInput(e)}
                 />
               </div>
