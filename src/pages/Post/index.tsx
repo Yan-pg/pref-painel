@@ -283,6 +283,7 @@ export function Post() {
         <Popups
           type="success"
           showModal={showModalSucess}
+          labelSuccess="Post adicionado com sucesso!"
           onClose={() => {
             setShowModalSucess(false);
             navigate("/posts");

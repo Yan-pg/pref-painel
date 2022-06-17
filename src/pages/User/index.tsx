@@ -184,6 +184,7 @@ export function User() {
       {showModal && (
         <Popups
           type="success"
+          labelSuccess="Usuário adicionado com sucesso!"
           showModal={showModal}
           onClose={() => {
             setShowModal(false);

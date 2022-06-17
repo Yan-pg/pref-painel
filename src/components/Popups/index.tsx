@@ -13,6 +13,7 @@ interface PopupsProps {
   buttonIsValid?: boolean;
   type: string;
   labelWriting?: string;
+  labelSuccess?: string;
   onClose(): void;
   submit?(): void;
   onChangeInput?(e: React.FormEvent<HTMLDivElement>): void;
@@ -44,6 +45,7 @@ export function Popups({
   onClose,
   submit,
   onChangeInput,
+  labelSuccess,
   labelWriting,
 }: PopupsProps) {
   return (
@@ -63,7 +65,7 @@ export function Popups({
             {type !== "writing" ? (
               <>
                 <img src={IconSuccess} alt="Sucesso" />
-                <h3>Usuario adicionado com sucesso!</h3>
+                <h3>{labelSuccess}</h3>
                 <p>Deu certo! Agora você já pode acessar o painel, bora lá?</p>
               </>
             ) : (
