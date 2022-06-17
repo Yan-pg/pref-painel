@@ -36,6 +36,8 @@ export function Banners() {
   const [bannersOrder, setBannerOrder] = useState<BannersProps[]>([]);
   const [showModalOrder, setShowModalOrder] = useState(false);
   const [showModalLink, setShowModalLink] = useState(false);
+  const [link, setLink] = useState("");
+  const [id, setId] = useState("");
 
   useEffect(() => {
     api
@@ -59,7 +61,7 @@ export function Banners() {
       });
   }, []);
 
-  const handleUpload = useCallback(async (file: any, id?: string) => {
+  const handleUpload = useCallback(async (file: any, idBanner?: string) => {
     const value = file.target;
 
     const data = new FormData();
@@ -67,8 +69,8 @@ export function Banners() {
     data.append("image", value.files[0]);
     data.append("position", "1");
 
-    if (id) {
-      await api.put(`/banners/update/${id}`, data);
+    if (idBanner) {
+      await api.put(`/banners/update/${idBanner}`, data);
     } else {
       await api.post("/banners/create", data);
     }
@@ -161,11 +163,19 @@ export function Banners() {
     document.location.reload();
   }, [bannersOrder]);
 
-  const deleteBanner = useCallback(async (id) => {
-    await api.delete(`banners/delete/${id}`);
+  const deleteBanner = useCallback(async (idBanner) => {
+    await api.delete(`banners/delete/${idBanner}`);
 
     document.location.reload();
   }, []);
+
+  const updateLink = useCallback(async () => {
+    const data = new FormData();
+
+    data.append("post_link", `${link}`);
+
+    await api.put(`/banners/update/${id}`, data);
+  }, [link, id]);
 
   return (
     <>
@@ -205,7 +215,12 @@ export function Banners() {
                       </button>
                     </DisplayFlex>
 
-                    <button>
+                    <button
+                      onClick={() => {
+                        setId(banner.id);
+                        setShowModalLink(true);
+                      }}
+                    >
                       <BiLink />
                       <span>Link</span>
                     </button>
@@ -264,17 +279,20 @@ export function Banners() {
         </ModalOrderContent>
       </ModalOrderContainer>
 
-      {true && (
+      {showModalLink && (
         <Popups
           type="writing"
-          showModal={false}
-          onClose={() => {}}
+          showModal={showModalLink}
+          onClose={() => setShowModalLink(false)}
           onChangeInput={(e: any) => {
-            console.log(e);
+            setLink(e.target.value);
           }}
           buttonIsValid={true}
           labelWriting="Digite aqui o link"
-          submit={() => {}}
+          submit={() => {
+            updateLink();
+            setShowModalLink(false);
+          }}
         />
       )}
     </>
